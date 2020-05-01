@@ -2,7 +2,35 @@ from kafka import KafkaConsumer, KafkaProducer
 from google.cloud import pubsub_v1
 import os
 
-class KafkaConnector():
+class MessageBroker():
+    kafka = None
+    google = None
+
+    def __init__(self, type):
+        if type == "kafka": self.kafka = KafkaConnector()
+        if type == "google": self.google = GooglePSConnector()
+
+    def publish_message(self, type, topic_name, value, producer_instance = None, key = None):
+        if type == "kafka":
+            self.kafka.kafka_publish_message(producer_instance=producer_instance, topic_name=topic_name, key=key, value=value)
+        if type == "google":
+            self.google.google_publish_message(producer_instance=producer_instance,topic_name=topic_name,message=value)
+
+    def generate_consumer(self, type, topic_name, auto_offset_reset = None, bootstrap_servers = None, api_version = None, gcallback = None):
+        if type == "kafka":
+            return self.kafka.connect_kafka_consumer(topic_name=topic_name, auto_offset_reset=auto_offset_reset,
+                                              bootstrap_servers=bootstrap_servers, api_version = api_version,
+                                              consumer_timeout_ms=100000)
+        if type == "google":
+            return self.google.connect_google_consumer(topic_name=topic_name,gcallback = gcallback)
+
+    def generate_producer(self, type):
+        if type == "kafka":
+            return self.kafka.connect_kafka_producer()
+        if type == "google":
+            return self.google.connect_google_producer()
+
+class KafkaConnector(MessageBroker):
 
     def kafka_publish_message(self, producer_instance, topic_name, key, value):
         try:
@@ -38,7 +66,7 @@ class KafkaConnector():
         finally:
             return _producer
 
-class GooglePSConnector():
+class GooglePSConnector(MessageBroker):
 
     def connect_google_producer(self):
         _producer = None
@@ -82,30 +110,3 @@ class GooglePSConnector():
             print('Exception in publishing message')
             print(str(ex))
 
-class MessageBroker():
-    kafka = None
-    google = None
-
-    def __init__(self, type):
-        if type == "kafka": self.kafka = KafkaConnector()
-        if type == "google": self.google = GooglePSConnector()
-
-    def publish_message(self, type, topic_name, value, producer_instance = None, key = None):
-        if type == "kafka":
-            self.kafka.kafka_publish_message(producer_instance=producer_instance, topic_name=topic_name, key=key, value=value)
-        if type == "google":
-            self.google.google_publish_message(producer_instance=producer_instance,topic_name=topic_name,message=value)
-
-    def generate_consumer(self, type, topic_name, auto_offset_reset = None, bootstrap_servers = None, api_version = None, gcallback = None):
-        if type == "kafka":
-            return self.kafka.connect_kafka_consumer(topic_name=topic_name, auto_offset_reset=auto_offset_reset,
-                                              bootstrap_servers=bootstrap_servers, api_version = api_version,
-                                              consumer_timeout_ms=100000)
-        if type == "google":
-            return self.google.connect_google_consumer(topic_name=topic_name,gcallback = gcallback)
-
-    def generate_producer(self, type):
-        if type == "kafka":
-            return self.kafka.connect_kafka_producer()
-        if type == "google":
-            return self.google.connect_google_producer()

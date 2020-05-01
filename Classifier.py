@@ -7,13 +7,11 @@ from keras.models import Sequential, load_model
 from keras.layers import Dense, Conv2D, Activation, MaxPool2D, Flatten, Dropout, BatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
 
-"""
-This module defines a classifier for the MNIST Fashion dataset.
 
-The module allows for loading the dataset, training a model,
-and classifying the images from a predefined test set.
-"""
+#This module defines a classifier for the MNIST Fashion dataset.
 
+#The module allows for loading the dataset, training a model,
+#and classifying the images from a predefined test set.
 
 def load_mnist(path, kind):
     """

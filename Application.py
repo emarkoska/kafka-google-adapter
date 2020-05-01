@@ -3,6 +3,10 @@ from Classifier import load_mnist
 import uuid
 from datetime import datetime
 
+#Module with application instance.
+#The module intends to listen to messages from either google or kafka.
+#Once a message is received, the classifier is called
+
 def classify_images():
     X_test, y_test = load_mnist('Data/', kind='t10k')
     message_broker = MessageBroker("google")
@@ -28,6 +32,7 @@ def classify_images():
 
 
 def kafka_testtopic():
+    #Tests run on a test topic for simple communication testing of the adapter
 
     #Consume
     running = True
@@ -50,9 +55,12 @@ def kafka_testtopic():
     # connector.publish_message(producer, "test", 'parsed', "automatedyay!")
 
 def callback(message):
+    #Basic callback
     print(message.data)
 
 def google_testtopic():
+    # Tests run on a test topic for simple communication testing of the adapter
+
     #Consume
     message_broker = MessageBroker(type='google')
     #consumer = message_broker.generate_consumer(type='google',topic_name='test',gcallback=callback)
@@ -64,8 +72,6 @@ def google_testtopic():
     #Message publishing
     publisher = message_broker.generate_producer(type='google')
     message_broker.publish_message(type='google',producer_instance=publisher,topic_name='test',value=b"test?")
-
-
 
 if __name__ == '__main__':
     classify_images()
