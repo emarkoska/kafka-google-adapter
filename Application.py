@@ -1,7 +1,28 @@
 from MessageBroker import MessageBroker
 from Classifier import load_mnist
+import uuid
+from datetime import datetime
 
-def classify_images:
+def classify_images():
+    X_test, y_test = load_mnist('Data/', kind='t10k')
+    message_broker = MessageBroker("google")
+
+    # Sending images
+    img = X_test[1]
+    new_uuid = str(uuid.uuid1())
+    new_time = str(datetime.now())
+    publisher = message_broker.generate_producer(type='google')
+    message = img
+    message_broker.publish_message(type='google', producer_instance=publisher, topic_name='images', value=message)
+
+    #Listening to print out classes
+    consumer = message_broker.generate_consumer(type='google',topic_name='classes',gcallback=callback)
+
+    try:
+       consumer.result()
+    except KeyboardInterrupt:
+       consumer.cancel()
+
 
 
 
@@ -47,7 +68,7 @@ def google_testtopic():
 
 
 if __name__ == '__main__':
-    google_testtopic()
+    classify_images()
 
 
 

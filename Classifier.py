@@ -126,9 +126,6 @@ def classify_image(image):
 
 def classify_images():
     X_test, y_test = load_mnist('Data/', kind='t10k')
-    #X_test = X_test / 255.0
-    #X_test = X_test.reshape(-1, 28, 28, 1)
-
     for img in X_test:
         print("The predicted class is %s" % classify_image(img))
 
