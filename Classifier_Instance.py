@@ -9,17 +9,12 @@ message_broker = MessageBroker(type="google")
 def classify(message):
 
     #Classifies
-    print(message)
-    #Unpack the message
-    #Classify the image
-
-    #class_category = classifier.classify_image(message)
-    #print(class_category)
-    #publisher = message_broker.generate_producer(type='google')
-    #tosend = bytes(class_category)
-
-    #message_broker.publish_message(type='google', producer_instance=publisher, topic_name='classes', value=tosend)
-    #print(tosend.data)
+    img = np.frombuffer(message.data, dtype='uint8')
+    class_category = classifier.classify_image(img)
+    print(class_category)
+    publisher = message_broker.generate_producer(type='google')
+    tosend = bytes([class_category])
+    message_broker.publish_message(type='google', producer_instance=publisher, topic_name='classes', value=tosend)
     message.ack()
 
 

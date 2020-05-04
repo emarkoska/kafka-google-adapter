@@ -115,7 +115,7 @@ def classify_image(image):
             Returns: integer containing the class of the input image
     """
 
-    model = load_model('model_saved.h5')
+    model = load_model('model_saved2.h5')
     test_img = image / 255
     test_img = test_img.reshape(-1,28,28,1)
     test_img = test_img.reshape(1, 28, 28, 1)
