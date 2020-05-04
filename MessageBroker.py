@@ -30,7 +30,7 @@ class MessageBroker():
         if type == "google":
             return self.google.connect_google_producer()
 
-class KafkaConnector(MessageBroker):
+class KafkaConnector():
 
     def kafka_publish_message(self, producer_instance, topic_name, key, value):
         try:
@@ -66,7 +66,7 @@ class KafkaConnector(MessageBroker):
         finally:
             return _producer
 
-class GooglePSConnector(MessageBroker):
+class GooglePSConnector():
 
     def connect_google_producer(self):
         _producer = None
