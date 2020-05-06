@@ -6,6 +6,10 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Conv2D, Activation, MaxPool2D, Flatten, Dropout, BatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
+import tensorflow as tf
+from keras import backend as K
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 #This module defines a classifier for the MNIST Fashion dataset.
@@ -104,6 +108,8 @@ def train_model(path):
 
     model.save('model_saved.h5')
 
+
+
 def classify_image(image):
     """
         Classifies a single input image fed from the predefined MNIST Fashion
@@ -114,18 +120,21 @@ def classify_image(image):
 
             Returns: integer containing the class of the input image
     """
-
+    K.clear_session()
     model = load_model('model_saved2.h5')
     test_img = image / 255
     test_img = test_img.reshape(-1,28,28,1)
     test_img = test_img.reshape(1, 28, 28, 1)
     preds = model.predict_classes(test_img)
+    K.clear_session()
     return preds[0]
 
 def classify_images():
+    K.clear_session()
     X_test, y_test = load_mnist('Data/', kind='t10k')
     for img in X_test:
         print("The predicted class is %s" % classify_image(img))
+    K.clear_session()
 
 if __name__ == '__main__':
     classify_images()
