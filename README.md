@@ -9,15 +9,15 @@ Both streaming services contain the following topics: images, classes, test
 The project demonstrates communication between Classifier_instance -> MessageBroker - kafka and Classifier_instance -> MessageBroker -> google
 
 To run the system with kafka:
-Start the kafka local instance
-Open cmd. Navigate to project directory. Run 'classifier_instance.py kafka'
-Open cmd. Navigate to project directory. Run 'application.py kafka'
-Open cmd. Navigate to project directory. Run 'kafka_listener.py'
+* Start the kafka local instance
+* Open cmd. Navigate to project directory. Run 'classifier_instance.py kafka'
+* Open cmd. Navigate to project directory. Run 'application.py kafka'
+* Open cmd. Navigate to project directory. Run 'kafka_listener.py'
 
 
 To run the system with google:
-Open cmd. Navigate to the directory of the project. Run 'classifier_instance google'
-Open cmd. Navigate to the directory of the project. Run 'application.py google'
+* Open cmd. Navigate to the directory of the project. Run 'classifier_instance google'
+* Open cmd. Navigate to the directory of the project. Run 'application.py google'
 
 It's important that all messages are ACK-ed before testing either kafka or google.
 
